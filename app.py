@@ -3,31 +3,48 @@ import pandas as pd
 import plotly.express as px
 
 st.header("Vehicles Web App")
-st.write("This is a simple Streamlit application that displays some useful graphics about vehicle information.")
+st.write("This is a simple Streamlit application that displays some useful graphics about vehicle data.")
 
 # Imorting vehicle data
 vehicles = pd.read_csv("/Users/jking/Data_Science/Sprint4Project/vehicles_us.csv")
 
 #---------------Display the DataFrame---------------
-st.write("### Preview of Vehicle Data")
+st.write("#### Preview of Vehicle Data")
 st.dataframe(vehicles)
 #-----------------------------------------------------------
 
-st.write("### Start of App")
+st.write("## Vehicle Data Visualizations")
+st.write("")
+st.write("")
 
-#--------------- Histogram ---------------
-
-fig1 = px.histogram(
-    vehicles,
-    x='price',
-    nbins=50,
-    title="Distribution of Vehicle Prices",
+#--------------------- Price and Mileage Histograms --------------------------
+st.write("##### Distributions of Vehicle Price and Mileage")
+show_price = st.checkbox("Show Distribution of Vehicle Prices")
+if show_price:
+    fig1a = px.histogram(
+        vehicles,
+        x='price',
+        nbins=1000,
+        title="Distribution of Vehicle Prices",
     labels={"price": "Price of Vehicles(in USD)"}
-)
-#fig1.show()
-st.plotly_chart(fig1, use_container_width=True) #auto resizes chart
+    )
+    fig1a.update_xaxes(tickformat=",")
+    #fig1a.show()
+    st.plotly_chart(fig1a, use_container_width=True) #auto resizes chart
+else:
+    fig1b = px.histogram(
+        vehicles,
+        x='odometer',
+        nbins=1000,
+        title="Distribution of Vehicle Mileage",
+        labels={"odometer": "Mileage"}
+        
+    )
+    fig1b.update_xaxes(tickformat=",")
+    #fig1b.show()
+    st.plotly_chart(fig1b, use_container_width=True) #auto resizes chart
+#-------------------------------------------------------------
 
-#-----------------------------------------
 #---------------Price vs Mileage Scatter Plot ---------------
 #conditions in order(worst to best)
 quality_order=['salvage', 'fair','good','excellent', 'like new', 'new'] 
@@ -39,7 +56,7 @@ vehicles['condition'] = pd.Categorical(
     ordered=True
 )
 #color scheme based on condition
-semantic_colors = st.checkbox("Use semantic colors (bad->good)")
+semantic_colors = st.checkbox("Change key colors")
 default_palette = px.colors.qualitative.D3
 semantic_palette = ['#d62728', '#ff7f0e', '#bcbd22', '#2ca02c', '#17becf', '#1f77b4'] #red to blue-green
 palette = semantic_palette if semantic_colors else default_palette
@@ -57,10 +74,9 @@ fig2 = px.scatter(
 fig2.update_xaxes(tickformat=",")
 #fig2.show()
 st.plotly_chart(fig2, use_container_width=True) #auto resizes chart
-
+#-------------------------------------------------------------
 
 #--------------- Vehicle Condition Bar Chart ---------------
-
 #create a 2 column dataframe based on condition and count
 condition_df = vehicles['condition'].value_counts().sort_index().reset_index()
 condition_df.columns = ['condition', 'count']
