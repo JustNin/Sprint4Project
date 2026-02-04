@@ -1,4 +1,4 @@
-pandas>=2.0,<2.1
-streamlit>=1.25,<1.29
-altair>=5.0,<5.1
-plotly>=5.15,<5.19
+streamlit==1.25.0
+pandas==2.0.3
+altair==5.0.1
+plotly==5.15.0
