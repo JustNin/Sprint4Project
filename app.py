@@ -6,8 +6,8 @@ st.header("Vehicles Web App")
 st.write("This is a simple Streamlit application that displays some useful graphics about vehicle data.")
 
 # Imorting vehicle data
-vehicles = pd.read_csv("/Users/jking/Data_Science/Sprint4Project/vehicles_us.csv")
-
+#vehicles = pd.read_csv("/Users/jking/Data_Science/Sprint4Project/vehicles_us.csv")
+vehicles = pd.read_csv("/Sprint4Project/vehicles_us.csv")
 #---------------Display the DataFrame---------------
 st.write("#### Preview of Vehicle Data")
 st.dataframe(vehicles)
